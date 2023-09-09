@@ -1,7 +1,7 @@
 #### Keybord
 
    程序运行时，每当安按下键盘时，播放一个MP3(可以进行随机播放 math.rand   rand.rand)  修改MP3的名字
-
+   按键过多时可能会出现没有声音
 ```
 s :="1234567890zxcvbnmasdfghjkl;qtyuiop"
 for i:=0;i <len(s);i++{

@@ -16,7 +16,7 @@ import (
 
 func main() {
 	//使用通道获取一系列击键：
-	KeysEvents, err := keyboard.GetKeys(5)
+	KeysEvents, err := keyboard.GetKeys(1024)
 	if err != nil {
 		fmt.Println(err.Error())
 		return
@@ -36,17 +36,18 @@ func main() {
 		fmt.Printf("You pressed:string %s, key %X\r\n", string(event.Rune), event.Key)
 		for i := 0; i <= command.Len(); i++ { // 类似java 的迭代器
 			fmt.Println("first.Next():", first.Next())
+
 			if first.Next() != nil {
 				a.Stop()
 				for e := command.Front(); e != nil; e = e.Next() {
 					command.Remove(e) // 清除所有命令
 				}
-				fmt.Println("command:", command)
+				fmt.Printf("command:%+v\n", command)
 			}
 		}
 
 		a.OpenMp3File()
-		a.PlayMp3()
+		go a.PlayMp3() // 启动协程  使用chan 传递信息
 
 		if event.Key == keyboard.KeyEsc {
 			break
@@ -68,7 +69,8 @@ type Mp3File struct {
 func (m *Mp3File) OpenMp3File() {
 	// 1. 打开mp3文件
 	var err error
-	rand.Seed(time.Now().UnixNano()) // 设置随机种子数
+	rand.New(rand.NewSource(time.Now().UnixNano()))
+	//rand.Seed(time.Now().UnixNano()) // 设置随机种子数
 
 	a := strconv.Itoa(rand.Intn(30))
 	fmt.Printf("播放第%s首歌\n", a)
